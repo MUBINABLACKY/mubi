@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mubina I - Profile Card</title>
+  <style>
+    :root {
+      --bg: #f3f6ff;
+      --card-bg: #ffffff;
+      --accent-1: #3ca89b;
+      --accent-2: #76d1b8;
+      --muted: #7b7f9a;
+      --shadow: 0 10px 30px rgba(33,41,61,0.08);
+      font-family: "Poppins", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: linear-gradient(180deg, #e9f8f5 0%, #f8fbff 100%);
+      min-height: 100vh; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      flex-direction: column;
+      color: #222;
+      letter-spacing: 0.3px;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background: linear-gradient(180deg, #1e1e1e 0%, #2d2d2d 100%);
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .card {
+      background: #2a2a2a;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    body.dark-mode .stat {
+      background: #333;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .skills span {
+      background: #3ca89b33;
+      color: #9ef3dd;
+    }
+
+    .card {
+      width: min(420px, 92vw);
+      background: var(--card-bg);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.7s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 42px rgba(33,41,61,0.12);
+    }
+
+    .cover {
+      height: 120px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      position: relative;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 6px solid var(--card-bg);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -50px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .avatar img:hover {
+      transform: scale(1.1);
+    }
+
+    .content {
+      padding: 64px 24px 24px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    p.title {
+      color: var(--accent-1);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      min-height: 20px;
+    }
+
+    p.bio {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    body.dark-mode p.bio {
+      color: #ccc;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: #f7f8fb;
+      padding: 10px 14px;
+      border-radius: 10px;
+      min-width: 80px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .stat:hover {
+      background: #e9f8f5;
+      transform: translateY(-3px);
+      cursor: pointer;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .skills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .skills span {
+      background: #e0f7f1;
+      color: #3ca89b;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      display: inline-block;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .skills span:hover {
+      background: #d2f0e9;
+      transform: scale(1.05);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(60,168,155,0.25);
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(60,168,155,0.3);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent-1);
+      border: 1px solid rgba(60,168,155,0.4);
+      box-shadow: none;
+    }
+
+    /* Message box style with animation */
+    .message-box {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .message-box.show {
+      opacity: 1;
+      max-height: 200px;
+    }
+
+    .message-box textarea {
+      width: 300px;
+      height: 80px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+      font-family: inherit;
+    }
+
+    .sent-message {
+      margin-top: 10px;
+      background: #e0f7f1;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #333;
+      display: none;
+    }
+
+    /* Dark mode toggle button */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-1);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent-2);
+    }
+  </style>
+</head>
+<body>
+
+  <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+
+  <article class="card">
+    <div class="cover">
+      <div class="avatar">
+        <img src="https://i.imgur.com/Z9va0tT.jpeg" alt="Mubina's Photo">
+      </div>
+    </div>
+
+    <div class="content">
+      <h2>Mubina I</h2>
+      <p class="title"><span id="typed">   </span></p>
+      <p class="bio">Frontend Developers build the parts of a website or app that users see and interact with — like buttons, layouts, and animations.</p>
+      <p class="bio">They use HTML and CSS to create responsive, attractive, and user-friendly designs that work on all devices.</p>
+
+      <div class="skills">
+        <span>HTML</span>
+        <span>CSS</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>1.2k</strong>
+          <span>Followers</span>
+        </div>
+        <div class="stat">
+          <strong>350</strong>
+          <span>Following</span>
+        </div>
+        <div class="stat">
+          <strong>02</strong>
+          <span>Projects</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="followBtn" class="btn">Follow</button>
+        <button id="messageBtn" class="btn secondary">Message</button>
+      </div>
+
+      <!-- Message box -->
+      <div class="message-box" id="messageBox">
+        <textarea id="messageInput" placeholder="Type your message here..."></textarea>
+        <button class="btn" id="sendBtn">Send</button>
+      </div>
+
+      <!-- Sent message display -->
+      <div class="sent-message" id="sentMessage"></div>
+    </div>
+  </article>
+
+  <script>
+    const followBtn = document.getElementById("followBtn");
+    const messageBtn = document.getElementById("messageBtn");
+    const messageBox = document.getElementById("messageBox");
+    const sendBtn = document.getElementById("sendBtn");
+    const sentMessage = document.getElementById("sentMessage");
+    const messageInput = document.getElementById("messageInput");
+    const themeToggle = document.getElementById("themeToggle");
+    const roles = ["Frontend Developer", "UI Designer", "Web Creator"];
+    let i = 0;
+
+    // Typing role animation
+    setInterval(() => {
+      document.getElementById("typed").textContent = roles[i];
+      i = (i + 1) % roles.length;
+    }, 2000);
+
+    // Follow button
+    followBtn.addEventListener("click", () => {
+      if (followBtn.innerText === "Follow") {
+        followBtn.innerText = "Following ✓";
+        followBtn.style.background = "#ccc";
+      } else {
+        followBtn.innerText = "Follow";
+        followBtn.style.background = "linear-gradient(90deg, #3ca89b, #76d1b8)";
+      }		
+    });
+
+    // Message button toggle
+    messageBtn.addEventListener("click", () => {
+      messageBox.classList.toggle("show");
+    });
+
+    // Send message
+    sendBtn.addEventListener("click", () => {
+      const msg = messageInput.value.trim();
+      if (msg) {
+        sentMessage.innerText = "Message Sent: " + msg;
+        sentMessage.style.display = "block";
+        messageInput.value = "";
+        messageBox.classList.remove("show");
+      } else {
+        alert("Please type a message before sending!");
+      }
+    });
+
+    // Dark mode toggle
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      themeToggle.textContent =
+        document.body.classList.contains("dark-mode")
+          ? "☀️ Light Mode"
+          : "🌙 Dark Mode";
+    });
+  </script>
+</body>
+</html>
