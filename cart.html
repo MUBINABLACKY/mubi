@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - Mubina Ring Shop</title>
+
+  <style>
+
+    /* BODY FIX FOR FOOTER */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #fffafc;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #d63384;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    nav {
+      background: #f8bbd0;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #d63384;
+    }
+
+    /* TABLE FIXED WIDTH */
+    table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 11px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background: #f8bbd0;
+    }
+
+    td img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    /* FIXED QTY BOX */
+    .qty-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 120px;
+    }
+
+    .qty-number {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+    }
+
+    .qty-btn {
+      padding: 5px 12px;
+      border: none;
+      background: #d63384;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .qty-btn:hover {
+      background: #ad1457;
+    }
+
+    .remove-btn {
+      background: #d63384;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background: #ad1457;
+    }
+
+    .total {
+      text-align: right;
+      padding: 20px 80px;
+      font-size: 1.1rem;
+    }
+
+    /* FOOTER FIX */
+    .site-footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 12px 0;
+      background: #f8bbd0;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Your Shopping Cart</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="rings.html">Rings</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <table id="cart-table">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Remove</th>
+    </tr>
+  </table>
+
+  <div class="total" id="cart-total"></div>
+
+  <!-- FIXED FOOTER -->
+  <footer class="site-footer">
+    © 2025 Mubina Ring Shop | All Rights Reserved
+  </footer>
+
+<script>
+
+const RINGS = [
+  { id: 1, name: "Golden Spark Ring", price: 12000,
+    image: "https://assets-jiocdn.ajio.com/medias/sys_master/root/20240322/PwPE/65fda6ec16fd2c6e6a791a56/-473Wx593H-6006849640-multi-MODEL.jpg" },
+
+  { id: 2, name: "Silver Elegant Ring", price: 10000,
+    image: "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu1/diamond/diamond-Brillant_AAA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/alloycolour/white.jpg" },
+
+  { id: 3, name: "Shiny Diamond Ring", price: 25000,
+    image: "https://cdn.caratlane.com/media/catalog/product/J/R/JR04042-WGP900_1_lar.jpg" },
+
+  { id: 4, name: "Rose Gold Beauty", price: 18000,
+    image: "https://kinclimg2.bluestone.com/f_webp,c_scale,w_1024,b_rgb:f0f0f0/giproduct/BIRS0077R104_RAA18DIG6SYRUXXXX_ABCD00-PICS-00001-1024-72168.png" }
+];
+
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartTable = document.getElementById("cart-table");
+  const cartTotal = document.getElementById("cart-total");
+
+  cartTable.innerHTML = `
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Remove</th>
+    </tr>
+  `;
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const ring = RINGS.find(r => r.id === item.id);
+    if (!ring) return;
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td><img src="${ring.image}"></td>
+      <td>${ring.name}</td>
+      <td>₹${ring.price}</td>
+
+      <td>
+        <div class="qty-box">
+          <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+          <span class="qty-number">${item.quantity}</span>
+          <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+        </div>
+      </td>
+
+      <td>₹${ring.price * item.quantity}</td>
+
+      <td><button class="remove-btn" onclick="removeItem(${index})">Remove</button></td>
+    `;
+
+    cartTable.appendChild(row);
+
+    total += ring.price * item.quantity;
+  });
+
+  cartTotal.textContent =
+    cart.length ? "Grand Total: ₹" + total : "Your cart is empty 🛒";
+}
+
+function changeQty(index, value) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += value;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+function removeItem(index) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+loadCart();
+
+</script>
+
+</body>
+</html>

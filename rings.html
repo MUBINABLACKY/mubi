@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rings - Mubina Ring Shop</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fffafc;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #d63384;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    nav {
+      background: #f8bbd0;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #d63384;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .ring-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+
+    .ring-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .ring-card h3 {
+      margin: 10px 0;
+    }
+
+    .ring-card p {
+      margin: 5px 0;
+    }
+
+    .add-btn {
+      padding: 8px 18px;
+      background: #d63384;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background: #ad1457;
+    }
+    
+    /* TOAST MESSAGE */
+    #toast {
+      visibility: hidden;
+      min-width: 200px;
+      background-color: #d63384;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      padding: 12px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 12px;
+      background: #f8bbd0;
+      font-weight: bold;
+    }
+  </style>
+
+</head>
+<body>
+
+<header>
+  <h1>Our Ring Collection</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="rings.html">Rings</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html">Cart</a>
+</nav>
+
+<div class="container" id="ring-list"></div>
+
+<footer>
+  © 2025 Mubina Ring Shop | All Rights Reserved
+</footer>
+
+<script>
+
+const RINGS = [
+  { id: 1, name: "Golden Spark Ring", price: 12000,
+    image: "https://assets-jiocdn.ajio.com/medias/sys_master/root/20240322/PwPE/65fda6ec16fd2c6e6a791a56/-473Wx593H-6006849640-multi-MODEL.jpg" },
+
+  { id: 2, name: "Silver Elegant Ring", price: 10000,
+    image: "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu1/diamond/diamond-Brillant_AAA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/alloycolour/white.jpg" },
+
+  { id: 3, name: "Shiny Diamond Ring", price: 25000,
+    image: "https://cdn.caratlane.com/media/catalog/product/J/R/JR04042-WGP900_1_lar.jpg" },
+
+  { id: 4, name: "Rose Gold Beauty", price: 18000,
+    image: "https://kinclimg2.bluestone.com/f_webp,c_scale,w_1024,b_rgb:f0f0f0/giproduct/BIRS0077R104_RAA18DIG6SYRUXXXX_ABCD00-PICS-00001-1024-72168.png" }
+];
+
+function displayRings() {
+  const list = document.getElementById("ring-list");
+  RINGS.forEach(ring => {
+    list.innerHTML += `
+      <div class="ring-card">
+        <img src="${ring.image}">
+        <h3>${ring.name}</h3>
+        <p>₹${ring.price}</p>
+        <button class="add-btn" onclick="addToCart(${ring.id})">Add to Cart</button>
+      </div>
+    `;
+  });
+}
+/* SHOW TOAST MESSAGE */
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1500);
+    }
+
+function addToCart(id) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let item = cart.find(i => i.id === id);
+
+  if (item) {
+    item.quantity++;
+  } else {
+    cart.push({ id: id, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  showToast(); // ✔ Show message
+}
+
+displayRings();
+
+</script>
+
+</body>
+</html>
