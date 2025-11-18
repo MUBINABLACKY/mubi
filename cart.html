@@ -7,7 +7,6 @@
 
   <style>
 
-    /* BODY FIX FOR FOOTER */
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
@@ -42,7 +41,6 @@
       color: #d63384;
     }
 
-    /* TABLE FIXED WIDTH */
     table {
       width: 100%;
       max-width: 1000px;
@@ -71,11 +69,25 @@
       border-radius: 5px;
     }
 
-    /* FIXED QTY BOX */
+    /* FIXED WIDTH FOR ALL IMPORTANT COLUMNS */
+    th:nth-child(1), td:nth-child(1) { width: 120px; }
+    th:nth-child(2), td:nth-child(2) { width: 220px; }
+    th:nth-child(3), td:nth-child(3) { width: 120px; }
+    th:nth-child(4), td:nth-child(4) { width: 150px; }
+
+    /* ⭐ FIXED TOTAL COLUMN WIDTH */
+    th:nth-child(5), td:nth-child(5) {
+      width: 140px;
+      min-width: 140px;
+      max-width: 140px;
+      white-space: nowrap; /* total big number also stays in single line */
+    }
+
+    th:nth-child(6), td:nth-child(6) { width: 100px; }
+
     .qty-box {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
       width: 120px;
     }
@@ -113,19 +125,26 @@
       background: #ad1457;
     }
 
+    /* FIXED TOTAL BOX BELOW */
     .total {
-      text-align: right;
-      padding: 20px 80px;
-      font-size: 1.1rem;
+      margin: 25px auto;
+      width: 350px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    /* FOOTER FIX */
     .site-footer {
       margin-top: auto;
       text-align: center;
       padding: 12px 0;
       background: #f8bbd0;
       font-size: 14px;
+      font-weight: bold;
     }
 
   </style>
@@ -156,7 +175,6 @@
 
   <div class="total" id="cart-total"></div>
 
-  <!-- FIXED FOOTER -->
   <footer class="site-footer">
     © 2025 Mubina Ring Shop | All Rights Reserved
   </footer>
